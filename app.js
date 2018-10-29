@@ -25,6 +25,7 @@ function loadEventListeners() {
 // Get Tasks from Local Storage
 function getTasks() {
   // Initialize tasks, check to see if there is anything there
+  // key = tasks | value = []
   let tasks;
   // if there isn't, set to an empty array
   if (localStorage.getItem("tasks") === null) {
@@ -40,7 +41,7 @@ function getTasks() {
     const li = document.createElement("li");
     // Add class
     li.className = "collection-item";
-    // Create tet node and append to li
+    // Create text node and append to li
     li.appendChild(document.createTextNode(task));
     // Create new link element
     const link = document.createElement("a");
@@ -74,16 +75,14 @@ function addTask(e) {
   link.innerHTML = '<i class="fa fa-remove"></i>';
   // Append the link to li
   li.appendChild(link);
-
   // Append li to ul
   taskList.appendChild(li);
 
   // Store in local storage
   storeTaskInLocalStoragte(taskInput.value);
-
   // Clear input
   taskInput.value = "";
-
+  // Prevent that default
   e.preventDefault();
 }
 
@@ -104,13 +103,19 @@ function storeTaskInLocalStoragte(task) {
 // Remove task
 function removeTask(e) {
   if (e.target.parentElement.classList.contains("delete-item")) {
-    if (confirm("Is this really done?")) {
-      e.target.parentElement.parentElement.remove();
+    e.target.parentElement.parentElement.remove();
+    // Remove from Local Storage
+    // Passing in the element.. b/c there is no id or class
+    removeTaskFromLocalStorage(e.target.parentElement.parentElement);
 
-      // Remove from Local Storage
-      // Passing in the element.. b/c there is no id or class
-      removeTaskFromLocalStorage(e.target.parentElement.parentElement);
-    }
+    // If you want a confirm to double check
+    // if (confirm("Is this really done?")) {
+    //   e.target.parentElement.parentElement.remove();
+
+    //   // Remove from Local Storage
+    //   // Passing in the element.. b/c there is no id or class
+    //   removeTaskFromLocalStorage(e.target.parentElement.parentElement);
+    // }
   }
 }
 
